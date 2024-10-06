@@ -77,7 +77,7 @@ API_KEY = "YOUR_API_KEY"
     ```bash
         python backend/app.py
     ```
-pip install faiss-cpu
+
 - Run frontend:
     ```bash
         streamlit run frontend/app.py
@@ -88,5 +88,5 @@ pip install faiss-cpu
 
 -  Access the Application
     - Frontend (Streamlit): Open your browser and navigate to http://localhost:8501
-    - Backend (FastAPI): The backend API is accessible at http://localhost:5000
+    - Backend (FLASK): The backend API is accessible at http://localhost:5000
 
