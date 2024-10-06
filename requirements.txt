@@ -1,0 +1,15 @@
+faiss-cpu
+openai
+langchain
+langchain-community
+PyPDF2
+pydantic
+python-dotenv
+streamlit
+langchain_google_genai
+streamlit-chat
+tiktoken
+uvicorn
+watchdog
+
+flask
