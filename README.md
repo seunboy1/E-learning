@@ -4,11 +4,6 @@
 
 The E-learning System (Question, Answer & Test) is an intelligent document-based Q&A solution designed to facilitate enhanced user interaction with research documents. Unlike traditional Q&A systems that simply return an answer to a user’s question, the E-learning system extends this process by including a "test question" in its response. This test question is used to evaluate whether the user understood the provided answer, promoting deeper engagement and learning. This system is ideal for users who want to better understand research documents and ensure they are grasping the material effectively.
 
-## Key Features
-- **Upload Research Documents**: Users can upload research documents (PDFs) to the system, which are then processed and stored for querying.
-- **Interactive Q&A**: Users can ask questions related to the uploaded document, and the system will provide a detailed answer along with a test question for user evaluation.
-- **User Understanding Assessment**: After the answer is provided, the E-learning system generates a test question. Users respond to this question, and their responses are evaluated to gauge their comprehension.
-- **FLASK Integration**: API endpoints are built using FLASK to handle user requests and route them efficiently.
 
 ## How it Works
 - Upload Document: The system allows users to upload research documents (PDF). The content is extracted and stored in a way that can be queried later.
