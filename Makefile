@@ -18,7 +18,7 @@ help:
 	@echo "  install       - Install dependencies"
 	@echo "  lint          - Run pylint linter"
 	@echo "  format        - Run code formatter using black"
-	@echo "  test          - Run tests"
+	@echo "  test          - Run tests and coverage using pytest"
 	@echo "  clean         - Clean up unnecessary files"
 	@echo "  clean-venv    - Remove virtual environment"
 
@@ -41,10 +41,11 @@ install: activate
 	@/bin/bash -c "pip install -r $(REQUIREMENTS)"
 	@echo "Dependencies installed"
 
-# Run tests using pytest
+# Run tests and coverage using pytest
 test: install
-	@echo "Running tests..."
-	@/bin/bash -c "pytest ."
+	@echo "Running tests and coverage..."
+	@/bin/bash -c "coverage run -m pytest -v"
+	@/bin/bash -c "coverage report -m"
 
 # Run code formatter using black
 format: install

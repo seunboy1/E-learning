@@ -69,6 +69,11 @@ The E-learning System (Question, Answer & Test) is an intelligent document-based
                 make lint 
             ```
 
+        - Testing and test ccoverage
+            ```bash
+                make test 
+            ```
+
     - Automatically:
         - Use pre commit hook
             ```bash

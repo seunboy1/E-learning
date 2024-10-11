@@ -13,7 +13,7 @@ ignore-paths = '^Monitoring/.ipynb_checkpoints/.*$|^venv/.*$'
 
 [tool.coverage.run]
 branch = true
-source = ["fast_api", "streamlit"]
+source = ["src"]
 
 [tool.coverage.report]
 show_missing = true
