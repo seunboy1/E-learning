@@ -47,7 +47,6 @@ The E-learning System (Question, Answer & Test) is an intelligent document-based
     ```
 - Create and activate virtual environment to manage dependencies:
     ```bash
-        make venv 
         make activate 
     ```
     

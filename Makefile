@@ -29,7 +29,7 @@ venv:
 	@echo "Virtual environment created."
 
 # Activate environment
-activate: 
+activate: venv
 	@echo "Activating environment..."
 	@/bin/bash -c "source $(VENV)/bin/activate" 
 	@echo "Environment activated"
