@@ -52,7 +52,7 @@ The E-learning System (Question, Answer & Test) is an intelligent document-based
     
 - Install necessary libraries:
     ```bash
-        make activate 
+        make install 
     ```
     
     

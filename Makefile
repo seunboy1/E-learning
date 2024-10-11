@@ -16,9 +16,9 @@ help:
 	@echo "  venv          - Create a virtual environment"
 	@echo "  activate      - Activating environment"
 	@echo "  install       - Install dependencies"
-	@echo "  test          - Run tests"
 	@echo "  lint          - Run pylint linter"
 	@echo "  format        - Run code formatter using black"
+	@echo "  test          - Run tests"
 	@echo "  clean         - Clean up unnecessary files"
 	@echo "  clean-venv    - Remove virtual environment"
 
@@ -41,11 +41,10 @@ install: activate
 	@/bin/bash -c "pip install -r $(REQUIREMENTS)"
 	@echo "Dependencies installed"
 
-# # Run tests using pytest
-# .PHONY: test
-# test: install
-# 	@echo "Running tests..."
-# 	$(PYTEST)
+# Run tests using pytest
+test: install
+	@echo "Running tests..."
+	@/bin/bash -c "pytest ."
 
 # Run code formatter using black
 format: install
@@ -71,4 +70,4 @@ lint: install
 # 	@echo "Removing virtual environment..."
 # 	rm -rf $(VENV_DIR)
 
-.PHONY: all help venv activate install format lint
+.PHONY: all help venv activate install format lint test
