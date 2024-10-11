@@ -166,3 +166,4 @@ cython_debug/
 vectors/
 test_questions.db
 chatbot/
+.vscode
