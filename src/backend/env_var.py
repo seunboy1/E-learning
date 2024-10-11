@@ -4,6 +4,7 @@ import os
 
 load_dotenv()
 
+
 class EnvVariable(Enum):
     DB_NAME = os.environ.get("DB_NAME")
     GCP_API_KEY = os.getenv("GCP_API_KEY")

@@ -33,9 +33,12 @@ elif GCP_API_KEY:
 vectorstore_path = EnvVariable.FAISS_PATH.value
 
 if os.path.exists(vectorstore_path):
-    vector_store = FAISS.load_local(vectorstore_path, embeddings, allow_dangerous_deserialization=True)
+    vector_store = FAISS.load_local(
+        vectorstore_path, embeddings, allow_dangerous_deserialization=True
+    )
 else:
     vector_store = None
+
 
 # Function to extract text from PDF
 def get_pdf_text(pdf_docs):
@@ -46,29 +49,30 @@ def get_pdf_text(pdf_docs):
             text += page.extract_text()
     return text
 
+
 # Function to extract text from a file path
 def get_pdf_text_from_path(file_paths):
     text = ""
     for file_path in file_paths:
-        with open(file_path, 'rb') as f:
+        with open(file_path, "rb") as f:
             pdf_reader = PdfReader(f)
             for page in pdf_reader.pages:
                 text += page.extract_text()
     return text
 
+
 def get_text_chunks(text):
     text_splitter = CharacterTextSplitter(
-        separator="\n",
-        chunk_size=1000,
-        chunk_overlap=200,
-        length_function=len
+        separator="\n", chunk_size=1000, chunk_overlap=200, length_function=len
     )
     chunks = text_splitter.split_text(text)
     return chunks
 
+
 def get_vectorstore(text_chunks):
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
+
 
 def generate_answer():
     answer_prompt_template = """
@@ -89,11 +93,13 @@ def generate_answer():
         Question:  {question}
     """
     answer_template = PromptTemplate(
-        template=answer_prompt_template, input_variables=["question"],
+        template=answer_prompt_template,
+        input_variables=["question"],
     )
 
     answer_chain = answer_template | llm | StrOutputParser()
     return answer_chain
+
 
 def generate_test_question_and_answer():
     # Create a structured prompt to generate both the test question and answer in one go
@@ -119,7 +125,8 @@ def generate_test_question_and_answer():
         - No emojis or emoticons should be returned in your response.
     """
     test_question_template = PromptTemplate(
-        template=question_prompt_template, input_variables=["context","question","answer"],
+        template=question_prompt_template,
+        input_variables=["context", "question", "answer"],
     )
     test_question_chain = test_question_template | llm | StrOutputParser()
 
@@ -127,7 +134,7 @@ def generate_test_question_and_answer():
 
 
 def generate_bullet_points():
-    
+
     # Create a structured prompt for the model
     bullet_point_prompt_template = """
         You are a multi-purpose bot whose one job is to engage the user. 
@@ -146,26 +153,31 @@ def generate_bullet_points():
         answer: {answer}
     """
     bullet_template = PromptTemplate(
-        template=bullet_point_prompt_template, input_variables=["context","question","answer"],
+        template=bullet_point_prompt_template,
+        input_variables=["context", "question", "answer"],
     )
     bullet_chain = bullet_template | llm | StrOutputParser()
 
     return bullet_chain
 
+
 def generate_test_question_id():
     """
     Generates a unique test_question_id using UUID.
-    
+
     Returns:
         str: A unique test_question_id in string format.
     """
     return str(uuid.uuid4())
 
+
 def query(user_input):
     # Tell Python to use the global vector_store
     global vector_store
     if vector_store is None:
-        vector_store = FAISS.load_local(vectorstore_path, embeddings, allow_dangerous_deserialization=True)
+        vector_store = FAISS.load_local(
+            vectorstore_path, embeddings, allow_dangerous_deserialization=True
+        )
 
     # Generate unique id
     test_question_id = generate_test_question_id()
@@ -178,30 +190,33 @@ def query(user_input):
 
     # Generate bullet points
     bullet_chain = generate_bullet_points()
-    
+
     retriever = vector_store.as_retriever(search_type="mmr", search_kwargs={"k": 4})
-    chain = ({
-        "context": itemgetter("question") | retriever,
-        "question":itemgetter("question"),
-        } |  RunnablePassthrough.assign(answer=answer_chain) |
-            RunnablePassthrough.assign(test_question=test_question_chain)|
-            RunnablePassthrough.assign( bullet_points=bullet_chain)
+    chain = (
+        {
+            "context": itemgetter("question") | retriever,
+            "question": itemgetter("question"),
+        }
+        | RunnablePassthrough.assign(answer=answer_chain)
+        | RunnablePassthrough.assign(test_question=test_question_chain)
+        | RunnablePassthrough.assign(bullet_points=bullet_chain)
     )
 
-    response = chain.invoke({'question':user_input})
-    
-    bullet_points = response['bullet_points'].split("-\n")
-    test_question = response['test_question'].split("?")[0]
-    test_answer = response['test_question'].split("?")[1].strip()
-    
+    response = chain.invoke({"question": user_input})
+
+    bullet_points = response["bullet_points"].split("-\n")
+    test_question = response["test_question"].split("?")[0]
+    test_answer = response["test_question"].split("?")[1].strip()
+
     # Return the response along with the bullet points, test question, and test question ID
     return {
         "answer": response["answer"],
         "bullet_points": bullet_points,
         "test_answer": test_answer,
         "test_question": test_question,
-        "test_question_id": test_question_id
+        "test_question_id": test_question_id,
     }
+
 
 # Function to evaluate the answer using LLM
 def evaluate_with_llm(question: str, user_answer: str, correct_answer: str) -> dict:
@@ -241,19 +256,33 @@ def evaluate_with_llm(question: str, user_answer: str, correct_answer: str) -> d
 
     # Call the LLM for understanding evaluation
     evaluation_chain = evaluation_prompt | llm | StrOutputParser()
-    evaluation_result = evaluation_chain.invoke({"question": question, "correct_answer": correct_answer, "user_answer": user_answer})
-    
+    evaluation_result = evaluation_chain.invoke(
+        {
+            "question": question,
+            "correct_answer": correct_answer,
+            "user_answer": user_answer,
+        }
+    )
+
     # Call the LLM for confidence evaluation
     confidence_chain = confidence_prompt | llm | StrOutputParser()
-    confidence_result = confidence_chain.invoke({"question": question, "correct_answer": correct_answer, "user_answer": user_answer})
-    
+    confidence_result = confidence_chain.invoke(
+        {
+            "question": question,
+            "correct_answer": correct_answer,
+            "user_answer": user_answer,
+        }
+    )
+
     # Parse results
     knowledge_understood = evaluation_result.strip() == "True"
-    knowledge_confidence = int(confidence_result.split(":")[-1])  # Convert confidence to integer
+    knowledge_confidence = int(
+        confidence_result.split(":")[-1]
+    )  # Convert confidence to integer
 
     return {
         "knowledge_understood": knowledge_understood,
         # "question": question,
         # "correct_answer": correct_answer,
-        "knowledge_confidence": knowledge_confidence
+        "knowledge_confidence": knowledge_confidence,
     }

@@ -53,8 +53,38 @@ The E-learning System (Question, Answer & Test) is an intelligent document-based
     
 - Install necessary libraries:
     ```bash
-        pip install -r requirements.txt
+        make activate 
     ```
+    
+    
+- To perform testing, test coverage, code formatting, linting
+
+    - Manually, run the following:
+        - Code formatting
+            ```bash
+                make format 
+            ```
+
+        - Linting
+            ```bash
+                make lint 
+            ```
+
+    - Automatically:
+        - Use pre commit hook
+            ```bash
+                pre-commit install
+            ```
+        - Now commit and push your code
+            ```bash
+                git add *
+                git commit -m "your_message"
+                git push 
+            ```
+        - Now you can make changes and commit. It should return something like this:
+
+            ![result](./docs/result.png)
+    
 - LLM 
   - To use Open AI(this is not free). [Link](https://platform.openai.com/docs/quickstart)
     ```

@@ -1,0 +1,24 @@
+[tool.pylint.messages_control]
+disable= [
+        "no-member",
+        "import-error",
+        "no-name-in-module",
+        "redefined-outer-name",
+        "missing-module-docstring",
+        "missing-function-docstring"
+]
+
+[tool.pylint.MASTER]
+ignore-paths = '^Monitoring/.ipynb_checkpoints/.*$|^venv/.*$'
+
+[tool.coverage.run]
+branch = true
+source = ["fast_api", "streamlit"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
+
+[tool.black]
+line-length = 83
+target-version = ["py38", "py39", "py310", "py311"]

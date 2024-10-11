@@ -5,6 +5,7 @@ import os
 
 load_dotenv()
 
+
 class EnvVariable(Enum):
     FAISS_PATH = os.environ.get("FAISS_PATH")
     BACKEND_URL = os.environ.get("BACKEND_URL")
