@@ -35,12 +35,20 @@ The E-learning System (Question, Answer & Test) is an intelligent document-based
 
 ### Installation
 
-- Create a virtual environment to manage dependencies:
+- Install python 3.9
     ```bash
-        python3.9 -m venv chatbot # create python VE
-        source chatbot/bin/activate # activate it
-        pip install faiss-cpu 
+        # Using Ubuntu/Debian:
+        sudo apt update
+        sudo apt install python3.9
+        sudo apt install python3.9-venv
 
+        # Using MacOS
+        brew install python@3.9
+    ```
+- Create and activate virtual environment to manage dependencies:
+    ```bash
+        make venv 
+        make activate 
     ```
     
 - Install necessary libraries:

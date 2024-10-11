@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: fast_api/Dockerfile.backend
+    container_name: backend
+    environment:
+      - GCP_API_KEY=${GCP_API_KEY}
+      - GCP_MODEL=${GCP_MODEL}
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: streamlit/Dockerfile.frontend
+    container_name: frontend
+    depends_on:
+      - backend
+    environment:
+      - BACKEND_URL=http://0.0.0.0:8000
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
