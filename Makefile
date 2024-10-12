@@ -19,6 +19,8 @@ help:
 	@echo "  lint          - Run pylint linter"
 	@echo "  format        - Run code formatter using black"
 	@echo "  test          - Run tests and coverage using pytest"
+	@echo "  build         - Build docker container"
+	@echo "  run           - Run docker container"
 	@echo "  clean         - Clean up unnecessary files"
 	@echo "  clean-venv    - Remove virtual environment"
 
@@ -58,6 +60,16 @@ lint: install
 	@echo "Running linter..."
 	@/bin/bash -c "pylint --recursive=y ."
 
+# Build docker container
+build: install
+	@echo "Building container..."
+	@/bin/bash -c "docker-compose up -d"
+
+# Run docker container
+run: install
+	@echo "Running container..."
+	@/bin/bash -c "docker-compose up -d"
+
 # # Clean up unnecessary files
 # .PHONY: clean
 # clean:
@@ -71,4 +83,4 @@ lint: install
 # 	@echo "Removing virtual environment..."
 # 	rm -rf $(VENV_DIR)
 
-.PHONY: all help venv activate install format lint test
+.PHONY: all help venv activate install format lint test build run
